@@ -6,7 +6,7 @@
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description"
-    content="分享起來!">
+    content="code SFML">
   
   <meta name="author" content="Yi-Chien Lee">
   <meta name="generator" content="Hugo 0.78.1" />
@@ -115,36 +115,124 @@ if (!doNotTrack) {
     <div class="row">
       <div class="col-lg-8 mx-auto">
         
-        <a href="/categories/%e7%a5%9d%e8%b3%80"
-          class="text-primary">祝賀</a>
+        <a href="/categories/sfml"
+          class="text-primary">S f m l</a>
         
-        <h2>Happy Birthday to Alex Chen</h2>
+        <h2>SFML 2</h2>
         <div class="mb-3 post-meta">
           <span>By Yi-Chien Lee</span>
           
           <span class="border-bottom border-primary px-2 mx-1"></span>
-          <span>13 November 2020</span>
+          <span>17 December 2020</span>
           
         </div>
         
-        <img src="https://ycl818.github.io/images/post/together.JPG" class="img-fluid w-100 mb-4" alt="Happy Birthday to Alex Chen">
-        
         <div class="content mb-5">
-          <h1 id="今天我大alex生日">今天我大Alex生日</h1>
-<h2 id="happy-birthday">Happy Birthday</h2>
-<p>這個效果OK吧,<strong>Alex Chen</strong>, 11/13 <em>天蠍座</em></p>
-<blockquote>
-<p>運勢非常旺，心想事成，許願都容易實現，而且運勢也相當不錯，喜歡的人事物都會因為你的招喚而來到眼前。感情方面容易一見锺情，你對他有意思他也會注意到你的存在，進展滿順利。幸運色是黑色。</p>
-</blockquote>
-<p><a href="https://www.dcard.tw/f/horoscopes/p/234787676">唐老師星座運勢</a></p>
-<h3 id="我們來回顧一下">我們來回顧一下</h3>
-<h4 id="alex-chen-的-wings-of-piano"><strong>Alex Chen</strong> 的 Wings of Piano</h4>
+          <div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">//this will have warning double =&gt; float
+</span><span style="color:#8d8687"></span>text.move(<span style="color:#f99b15">0.01</span>, <span style="color:#f99b15">0</span>);  <span style="color:#8d8687">// func move needs two parameters (float, float)
+</span><span style="color:#8d8687"></span>
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="https://www.youtube.com/embed/PjKjVfcLBnc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
-</div>
+<span style="color:#8d8687">//slove by added &#39;f&#39;
+</span><span style="color:#8d8687"></span>text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0</span>); 
 
+text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0.f</span>); 
+<span style="color:#8d8687">// going left 
+</span><span style="color:#8d8687"></span>text.move(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0.f</span>); 
+</code></pre></div><div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Window.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span><span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>(){
+    sf<span style="color:#5bc4bf">::</span>Font font;
+    <span style="color:#815ba4">if</span>(font.loadFromFile(<span style="color:#48b685">&#34;arial.ttf&#34;</span>) <span style="color:#5bc4bf">==</span> false ){
+        <span style="color:#815ba4">return</span> EXIT_FAILURE;
+    }
+    <span style="color:#fec418">int</span> LEFT_TO_RIGHT <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>;
+    <span style="color:#fec418">int</span> RIGHT_TO_LEFT <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">1</span>;
+    <span style="color:#fec418">int</span> direction <span style="color:#5bc4bf">=</span> RIGHT_TO_LEFT;  <span style="color:#8d8687">//0: LEFT_TO_RIGHT  1:RIGHT_TO_LEFT
+</span><span style="color:#8d8687"></span>    sf<span style="color:#5bc4bf">::</span>Text text(<span style="color:#48b685">&#34;Hello&#34;</span>, font);  
+    sf<span style="color:#5bc4bf">::</span>RenderWindow w(sf<span style="color:#5bc4bf">::</span>VideoMode(<span style="color:#f99b15">400</span>, <span style="color:#f99b15">200</span>), <span style="color:#48b685">&#34;Hello&#34;</span>);    
+    <span style="color:#815ba4">if</span> (direction <span style="color:#5bc4bf">==</span><span style="color:#f99b15">1</span>){
+        text.setPosition((<span style="color:#fec418">float</span>)( w.getSize().x) , <span style="color:#f99b15">0</span>                          
+    }
 
+    <span style="color:#815ba4">while</span>(w.isOpen()){
+        sf<span style="color:#5bc4bf">::</span>Event evt;  
+       <span style="color:#815ba4">if</span> (w.pollEvent(evt)) {
+    
+            <span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+                std<span style="color:#5bc4bf">::</span>cout <span style="color:#5bc4bf">&lt;&lt;</span> <span style="color:#48b685">&#34;close&#34;</span> <span style="color:#5bc4bf">&lt;&lt;</span> std<span style="color:#5bc4bf">::</span>endl;
+                w.close();
+            }
+        }
+        w.clear();
+        w.draw(text);
+        w.display();
+        <span style="color:#815ba4">switch</span>(direction){
+        <span style="color:#815ba4">case</span> LEFT_TO_RIGHT:
+            text.move(<span style="color:#f99b15">0.01f</span>,<span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> RIGHT_TO_LEFT:
+            text.move(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0.01f</span>,<span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        }
+    }
+   <span style="color:#815ba4">return</span> EXIT_SUCCESS;
+}
+</code></pre></div><ul>
+<li><code>text.setPosition</code> this func needs (float, float)</li>
+</ul>
+<p>so when we use w.getSize().x change &lsquo;int&rsquo; to &lsquo;float&rsquo; are needed</p>
+<p>C style transform : <code>text.setPosition((float)( w.getSize().x) , 0)</code></p>
+<ul>
+<li>
+<p><code>int direction = 0;  //0: LEFT_TO_RIGHT  1:RIGHT_TO_LEFT</code> to make code more flexible</p>
+</li>
+<li>
+<p><code>case LEFT_TO_RIGHT:</code>  switch case only accept constant</p>
+</li>
+</ul>
+<p>so if we want to let ' LEFT_TO_RIGHT' can be use, we need to declare &lsquo;const&rsquo; when we declarae the variable</p>
+<ul>
+<li>we can use <code>enum {LEFT_TO_RIGHT, RIGHT_TO_LEFT}</code>  to instead declare &lsquo;int&rsquo;</li>
+</ul>
+<p>because we only need to ensure this two directions have different values.</p>
+<h3 id="add-speed--same-method-as-direction">Add Speed , same method as direction.</h3>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">
+<span style="color:#815ba4">switch</span> (direction) {
+        <span style="color:#815ba4">case</span> LEFT_TO_RIGHT:
+            <span style="color:#815ba4">if</span> (speed <span style="color:#5bc4bf">==</span> FAST) {
+                text.move(<span style="color:#f99b15">0.1f</span>, <span style="color:#f99b15">0</span>);
+            }
+            <span style="color:#815ba4">if</span> (speed <span style="color:#5bc4bf">==</span> SLOW) {
+                text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0</span>);
+            }
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> RIGHT_TO_LEFT:
+            <span style="color:#815ba4">if</span> (speed <span style="color:#5bc4bf">==</span> FAST) {
+                text.move(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0.1f</span>, <span style="color:#f99b15">0</span>);
+            }
+            <span style="color:#815ba4">if</span> (speed <span style="color:#5bc4bf">==</span> SLOW) {
+                text.move(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0</span>);
+            }
+            <span style="color:#815ba4">break</span>;
+        }
+</code></pre></div><h3 id="improvement">Improvement</h3>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#fec418">float</span> diff;
+        <span style="color:#815ba4">switch</span> (speed) {
+        <span style="color:#815ba4">case</span> FAST:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.1f</span>;
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> SLOW:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.01f</span>;
+            <span style="color:#815ba4">break</span>;
+        }
+        <span style="color:#815ba4">switch</span> (direction) {
+        <span style="color:#815ba4">case</span> LEFT_TO_RIGHT:
+            text.move(diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> RIGHT_TO_LEFT:
+            text.move(<span style="color:#5bc4bf">-</span>diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        }
+</code></pre></div>
         </div>
 
         
