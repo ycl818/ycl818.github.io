@@ -139,6 +139,7 @@ text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">
 <span style="color:#8d8687">// going left 
 </span><span style="color:#8d8687"></span>text.move(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">0.f</span>); 
 </code></pre></div><div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Window.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
 </span><span style="color:#8d8687"></span><span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>(){
     sf<span style="color:#5bc4bf">::</span>Font font;
     <span style="color:#815ba4">if</span>(font.loadFromFile(<span style="color:#48b685">&#34;arial.ttf&#34;</span>) <span style="color:#5bc4bf">==</span> false ){
@@ -179,21 +180,21 @@ text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">
 </code></pre></div><ul>
 <li><code>text.setPosition</code> this func needs (float, float)</li>
 </ul>
-<p>so when we use w.getSize().x change &lsquo;int&rsquo; to &lsquo;float&rsquo; are needed</p>
+<p>so when we use w.getSize().x change &lsquo;int&rsquo; to &lsquo;float&rsquo; are needed.</p>
 <p>C style transform : <code>text.setPosition((float)( w.getSize().x) , 0)</code></p>
 <ul>
 <li>
 <p><code>int direction = 0;  //0: LEFT_TO_RIGHT  1:RIGHT_TO_LEFT</code> to make code more flexible</p>
 </li>
 <li>
-<p><code>case LEFT_TO_RIGHT:</code>  switch case only accept constant</p>
+<p><code>case LEFT_TO_RIGHT:</code>  switch case only accept constant.</p>
 </li>
 </ul>
-<p>so if we want to let ' LEFT_TO_RIGHT' can be use, we need to declare &lsquo;const&rsquo; when we declarae the variable</p>
+<p>So, if we want to let ' LEFT_TO_RIGHT' can be use, we need to declare &lsquo;const&rsquo; when we declare the variable.</p>
 <ul>
-<li>we can use <code>enum {LEFT_TO_RIGHT, RIGHT_TO_LEFT}</code>  to instead declare &lsquo;int&rsquo;</li>
+<li>we can use <code>enum {LEFT_TO_RIGHT, RIGHT_TO_LEFT}</code>  to instead of declaring &lsquo;int&rsquo;.</li>
 </ul>
-<p>because we only need to ensure this two directions have different values.</p>
+<p>because we only need to ensure these two directions have different values.</p>
 <h3 id="add-speed--same-method-as-direction">Add Speed , same method as direction.</h3>
 <div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">
 <span style="color:#815ba4">switch</span> (direction) {
@@ -232,6 +233,150 @@ text.move(<span style="color:#f99b15">0.01f</span>, <span style="color:#f99b15">
             text.move(<span style="color:#5bc4bf">-</span>diff, <span style="color:#f99b15">0</span>);
             <span style="color:#815ba4">break</span>;
         }
+</code></pre></div><h3 id="problem">Problem</h3>
+<ul>
+<li>Here comes a question: we use two &ldquo;enum&rdquo;</li>
+</ul>
+<p><code>enum {LEFT_TO_RIGHT, RIGHT_TO_LEFT};</code>
+<code>enum {FAST, SLOW};</code>
+Both values of them are 0 and 1.
+This may cause confusion.</p>
+<h3 id="solution">Solution</h3>
+<ul>
+<li>Give enum &ldquo;types&rdquo;, in other words, give them names.</li>
+</ul>
+<p><code>enum Direction {LEFT_TO_RIGHT, RIGHT_TO_LEFT};</code>
+<code>enum Speed {FAST, SLOW};</code></p>
+<ul>
+<li>To avoid name collision, we can give enum class</li>
+</ul>
+<p><code>enum class Direction {LEFT_TO_RIGHT, RIGHT_TO_LEFT};</code>
+<code>enum class Speed {FAST, SLOW};</code></p>
+<p>So that, we need to declare its class to use.</p>
+<p><code>Speed speed = Speed::SLOW;</code></p>
+<p><code>Direction direction = Direction::RIGHT_TO_LEFT;</code></p>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Window.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span>
+<span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
+    sf<span style="color:#5bc4bf">::</span>Font font;
+    <span style="color:#815ba4">if</span> (font.loadFromFile(<span style="color:#48b685">&#34;arial.ttf&#34;</span>) <span style="color:#5bc4bf">==</span> false) {
+        <span style="color:#815ba4">return</span> EXIT_FAILURE;
+    }
+    <span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Direction</span> { LEFT_TO_RIGHT, RIGHT_TO_LEFT };
+    <span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Speed</span> {FAST, SLOW};
+    Speed speed <span style="color:#5bc4bf">=</span> SLOW;
+    Direction direction <span style="color:#5bc4bf">=</span> RIGHT_TO_LEFT;  <span style="color:#8d8687">//0: LEFT_TO_RIGHT  1:RIGHT_TO_LEFT
+</span><span style="color:#8d8687"></span>    sf<span style="color:#5bc4bf">::</span>Text text(<span style="color:#48b685">&#34;Hello&#34;</span>, font);
+    sf<span style="color:#5bc4bf">::</span>RenderWindow w(sf<span style="color:#5bc4bf">::</span>VideoMode(<span style="color:#f99b15">400</span>, <span style="color:#f99b15">200</span>), <span style="color:#48b685">&#34;Hello&#34;</span>);
+   
+    <span style="color:#815ba4">if</span> (direction <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">1</span>) {
+        text.setPosition((<span style="color:#fec418">float</span>)(w.getSize().x), <span style="color:#f99b15">0</span>);
+    }
+    <span style="color:#815ba4">while</span> (w.isOpen()) {
+        sf<span style="color:#5bc4bf">::</span>Event evt; 
+        <span style="color:#815ba4">if</span> (w.pollEvent(evt)) {        
+            <span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+                w.close();
+            }
+        }
+        w.clear(); 
+        w.draw(text);
+        w.display();
+
+        <span style="color:#fec418">float</span> diff;
+        <span style="color:#815ba4">switch</span> (speed) {
+        <span style="color:#815ba4">case</span> FAST:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.1f</span>;
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> SLOW:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.01f</span>;
+            <span style="color:#815ba4">break</span>;
+        }
+        <span style="color:#815ba4">switch</span> (direction) {
+        <span style="color:#815ba4">case</span> LEFT_TO_RIGHT:
+            text.move(diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> RIGHT_TO_LEFT:
+            text.move(<span style="color:#5bc4bf">-</span>diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        }
+    }
+    <span style="color:#815ba4">return</span> EXIT_SUCCESS;
+}
+</code></pre></div><h3 id="add-key-event-draw-circles-and-speed-up">Add key event, draw circles, and speed up</h3>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Window.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span>
+<span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
+    srand
+
+    sf<span style="color:#5bc4bf">::</span>Font font;
+    <span style="color:#815ba4">if</span> (font.loadFromFile(<span style="color:#48b685">&#34;arial.ttf&#34;</span>) <span style="color:#5bc4bf">==</span> false) {
+        <span style="color:#815ba4">return</span> EXIT_FAILURE;
+    }
+    <span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Direction</span>{ LEFT_TO_RIGHT, RIGHT_TO_LEFT };
+    <span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Speed</span> {FAST, SLOW};
+
+    Direction direction <span style="color:#5bc4bf">=</span> Direction<span style="color:#5bc4bf">::</span>LEFT_TO_RIGHT;
+    Speed speed <span style="color:#5bc4bf">=</span> Speed<span style="color:#5bc4bf">::</span>SLOW;
+
+    sf<span style="color:#5bc4bf">::</span>Text text(<span style="color:#48b685">&#34;Hello&#34;</span>, font,<span style="color:#f99b15">200</span>);
+    text.setFillColor(sf<span style="color:#5bc4bf">::</span>Color(<span style="color:#f99b15">0</span>, <span style="color:#f99b15">255</span>, <span style="color:#f99b15">0</span>));
+
+    sf<span style="color:#5bc4bf">::</span>CircleShape circle(<span style="color:#f99b15">2</span>);
+    circle.setFillColor(sf<span style="color:#5bc4bf">::</span>Color(<span style="color:#f99b15">0</span>, <span style="color:#f99b15">0</span>, <span style="color:#f99b15">0</span>));
+
+    sf<span style="color:#5bc4bf">::</span>RenderWindow w(sf<span style="color:#5bc4bf">::</span>VideoMode(<span style="color:#f99b15">500</span>, <span style="color:#f99b15">250</span>), <span style="color:#48b685">&#34;Hello&#34;</span>); 
+    <span style="color:#815ba4">if</span> (direction <span style="color:#5bc4bf">==</span> Direction<span style="color:#5bc4bf">::</span>RIGHT_TO_LEFT) {
+        text.setPosition((<span style="color:#fec418">float</span>)(w.getSize().x), <span style="color:#f99b15">0</span>);
+    }
+    <span style="color:#815ba4">while</span> (w.isOpen()) {
+        sf<span style="color:#5bc4bf">::</span>Event evt; 
+        <span style="color:#815ba4">if</span> (w.pollEvent(evt)) {        
+            <span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+                w.close();
+            }
+            <span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>KeyPressed) {
+                <span style="color:#815ba4">if</span> (evt.key.code <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Key<span style="color:#5bc4bf">::</span>Left) {
+                    direction <span style="color:#5bc4bf">=</span> Direction<span style="color:#5bc4bf">::</span>LEFT_TO_RIGHT;
+                }
+                <span style="color:#815ba4">if</span> (evt.key.code <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Key<span style="color:#5bc4bf">::</span>Right) {
+                    direction <span style="color:#5bc4bf">=</span> Direction<span style="color:#5bc4bf">::</span>RIGHT_TO_LEFT;
+                }
+            }
+        }
+        w.clear(); 
+        w.draw(text);
+        <span style="color:#815ba4">for</span> (<span style="color:#fec418">unsigned</span> <span style="color:#fec418">int</span> i <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; i <span style="color:#5bc4bf">&lt;</span> w.getSize().x; i <span style="color:#5bc4bf">+=</span> <span style="color:#f99b15">4</span>) {
+            <span style="color:#815ba4">for</span> (<span style="color:#fec418">unsigned</span> <span style="color:#fec418">int</span> j <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; j <span style="color:#5bc4bf">&lt;</span> w.getSize().y; j <span style="color:#5bc4bf">+=</span> <span style="color:#f99b15">4</span>) {
+                circle.setPosition(<span style="color:#fec418">float</span>(i), <span style="color:#fec418">float</span>(j));
+                w.draw(circle);
+            }
+        }
+        
+        w.display();
+
+        <span style="color:#fec418">float</span> diff;
+        <span style="color:#815ba4">switch</span> (speed) {
+        <span style="color:#815ba4">case</span> Speed<span style="color:#5bc4bf">::</span>FAST:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.1f</span> <span style="color:#5bc4bf">*</span> <span style="color:#f99b15">40</span>;
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> Speed<span style="color:#5bc4bf">::</span>SLOW:
+            diff <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0.01f</span> <span style="color:#5bc4bf">*</span><span style="color:#f99b15">40</span>;
+            <span style="color:#815ba4">break</span>;
+        }
+        <span style="color:#815ba4">switch</span> (direction) {
+        <span style="color:#815ba4">case</span> Direction<span style="color:#5bc4bf">::</span>LEFT_TO_RIGHT:
+            text.move(diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        <span style="color:#815ba4">case</span> Direction<span style="color:#5bc4bf">::</span>RIGHT_TO_LEFT:
+            text.move(<span style="color:#5bc4bf">-</span>diff, <span style="color:#f99b15">0</span>);
+            <span style="color:#815ba4">break</span>;
+        }
+    }
+    <span style="color:#815ba4">return</span> EXIT_SUCCESS;
+}
 </code></pre></div>
         </div>
 

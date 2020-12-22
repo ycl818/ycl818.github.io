@@ -6,7 +6,16 @@
     <description>Recent content in codings on Yi_Chien&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Thu, 17 Dec 2020 18:05:00 +0800</lastBuildDate><atom:link href="https://ycl818.github.io/tags/codings/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Dec 2020 18:05:00 +0800</lastBuildDate><atom:link href="https://ycl818.github.io/tags/codings/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SFML 3</title>
+      <link>https://ycl818.github.io/blog/sfml3/</link>
+      <pubDate>Tue, 22 Dec 2020 18:05:00 +0800</pubDate>
+      
+      <guid>https://ycl818.github.io/blog/sfml3/</guid>
+      <description>SFML Notes #include &amp;lt;SFML/Graphics.hpp&amp;gt;#include &amp;lt;iostream&amp;gt;int main() { int fieldWidth = 20; int fieldHeight = 15; sf::Texture blocktexture; if (!</description>
+    </item>
+    
     <item>
       <title>SFML 2</title>
       <link>https://ycl818.github.io/blog/sfml2/</link>
