@@ -35,5 +35,14 @@
  中文是寬字元 &amp;quot;&amp;quot; 前面要加 L =&amp;gt; L&amp;quot;我的中文&amp;quot;</description>
     </item>
     
+    <item>
+      <title>SFML 4</title>
+      <link>https://ycl818.github.io/blog/sfml4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ycl818.github.io/blog/sfml4/</guid>
+      <description>When you include #include &amp;lt;SFML/Graphics.hpp&amp;gt;, you can start to use the classRenderwindow to create object.</description>
+    </item>
+    
   </channel>
 </rss>
