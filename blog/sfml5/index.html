@@ -128,7 +128,7 @@ if (!doNotTrack) {
         </div>
         
         <div class="content mb-5">
-          <h3 id="basic-setting">Basic setting</h3>
+          <h3 id="base-setting">Base setting</h3>
 <div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
 </span><span style="color:#8d8687"></span>
 <span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
@@ -245,6 +245,350 @@ Action action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc
 </span><span style="color:#8d8687"></span>			}
 	
 		}
+</code></pre></div><h3 id="and-we-want-to-leave-a-record">And we want to leave a record</h3>
+<ul>
+<li>use a vector to store status of field</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span>
+<span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
+	
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldWidth <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">10</span>;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldHeight <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">20</span>;
+
+	<span style="color:#fec418">bool</span> field[fieldWidth][fieldHeight] <span style="color:#5bc4bf">=</span> {};
+
+	
+	sf<span style="color:#5bc4bf">::</span>Texture yellowTexture;
+	<span style="color:#815ba4">if</span> (<span style="color:#5bc4bf">!</span>yellowTexture.loadFromFile(<span style="color:#48b685">&#34;yellow.png&#34;</span>)) {
+		<span style="color:#815ba4">return</span> EXIT_FAILURE;
+	}
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockWidth <span style="color:#5bc4bf">=</span> yellowTexture.getSize().x;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockHeight <span style="color:#5bc4bf">=</span> yellowTexture.getSize().y;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowWidth <span style="color:#5bc4bf">=</span> fieldWidth <span style="color:#5bc4bf">*</span> blockWidth;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowHeight <span style="color:#5bc4bf">=</span> fieldHeight <span style="color:#5bc4bf">*</span> blockHeight;
+	<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i origin(fieldWidth<span style="color:#5bc4bf">/</span><span style="color:#f99b15">2</span>,<span style="color:#f99b15">0</span>);
+	sf<span style="color:#5bc4bf">::</span>Vector2i pos(origin);
+
+	sf<span style="color:#5bc4bf">::</span>Sprite yellowSprite(yellowTexture);
+	sf<span style="color:#5bc4bf">::</span>RenderWindow window(sf<span style="color:#5bc4bf">::</span>VideoMode(windowWidth, windowHeight), <span style="color:#48b685">&#34;Tetris&#34;</span>);
+	sf<span style="color:#5bc4bf">::</span>Clock clock;
+	<span style="color:#815ba4">while</span> (window.isOpen()) {
+		<span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Action</span> {
+			Hold,
+			MoveDown,
+			MoveLeft,
+			MoveRight,
+		};
+		Action action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>Hold;
+		sf<span style="color:#5bc4bf">::</span>Event evt;
+		<span style="color:#815ba4">if</span> (window.pollEvent(evt)) {
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+				window.close();
+			}
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>KeyPressed) {
+				<span style="color:#815ba4">switch</span> (evt.key.code) {
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Left:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveLeft;
+					<span style="color:#815ba4">break</span>;
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Right:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveRight;
+					<span style="color:#815ba4">break</span>;
+				}
+			}
+		}
+		sf<span style="color:#5bc4bf">::</span>Vector2i nextPos(pos);
+		<span style="color:#815ba4">if</span> (clock.getElapsedTime().asSeconds() <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0.3f</span>) {
+			action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveDown;
+			clock.restart();
+		}
+		<span style="color:#815ba4">switch</span> (action) {
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>Hold:
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveDown:
+			nextPos.y<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveLeft:
+			nextPos.x<span style="color:#5bc4bf">--</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveRight:
+			nextPos.x<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		}
+
+		<span style="color:#8d8687">//Also need to check nextPos has a block or not.
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">if</span> (nextPos.x <span style="color:#5bc4bf">&gt;</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> nextPos.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span> nextPos.y <span style="color:#5bc4bf">&lt;</span> fieldHeight 
+			<span style="color:#5bc4bf">&amp;&amp;</span> field[nextPos.x][nextPos.y] <span style="color:#5bc4bf">==</span> false) {
+			pos <span style="color:#5bc4bf">=</span> nextPos;
+		}<span style="color:#8d8687">// if nextPos is not vaild
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">else</span> {
+			<span style="color:#815ba4">if</span> (action <span style="color:#5bc4bf">==</span> Action<span style="color:#5bc4bf">::</span>MoveDown) {
+				field[pos.x][pos.y] <span style="color:#5bc4bf">=</span> true; <span style="color:#8d8687">// when we touch bottom, record it as true.
+</span><span style="color:#8d8687"></span>				pos <span style="color:#5bc4bf">=</span> origin;  <span style="color:#8d8687">//let pos become origin which means move to beginning, when hit the bottom.
+</span><span style="color:#8d8687"></span>			}
+	
+		}
+
+		window.clear();
+		<span style="color:#8d8687">// draw field if field[][] is true
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> x <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; x <span style="color:#5bc4bf">&lt;</span> fieldWidth; x<span style="color:#5bc4bf">++</span>) {
+			<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> y <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; y <span style="color:#5bc4bf">&lt;</span> fieldHeight; y<span style="color:#5bc4bf">++</span>) {
+				<span style="color:#815ba4">if</span> (field[x][y]) {
+					yellowSprite.setPosition(
+						<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+						<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(yellowSprite);
+				}
+			}
+		}
+
+		yellowSprite.setPosition(<span style="color:#fec418">float</span>(pos.x <span style="color:#5bc4bf">*</span> blockWidth),
+								<span style="color:#fec418">float</span>(pos.y <span style="color:#5bc4bf">*</span> blockHeight));
+		window.draw(yellowSprite);
+		window.display();
+	
+		
+	}
+	
+	<span style="color:#815ba4">return</span> EXIT_SUCCESS;
+
+}
+</code></pre></div><h3 id="shape-a-square">Shape a square</h3>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">    <span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>	<span style="color:#8d8687">//      OO  (0, 0) (1, 0)
+</span><span style="color:#8d8687"></span>	sf<span style="color:#5bc4bf">::</span>Vector2i shape[<span style="color:#f99b15">4</span>] <span style="color:#5bc4bf">=</span> {
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+	}
+</code></pre></div><ul>
+<li><code>for (const sf::Vector2i&amp; d : shape){}</code> take out every thing in shape one by one</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">// draw a controling object
+</span><span style="color:#8d8687"></span>		<span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>        <span style="color:#8d8687">//      OO  (0, 0) (1, 0)      (0,0) is current pos
+</span><span style="color:#8d8687"></span>
+		<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : shape) {
+			sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+			yellowSprite.setPosition(<span style="color:#fec418">float</span>(np.x<span style="color:#5bc4bf">*</span> blockWidth),
+				<span style="color:#fec418">float</span>(np.y<span style="color:#5bc4bf">*</span> blockHeight));
+			window.draw(yellowSprite);	
+		}
+</code></pre></div><ul>
+<li>Now, looks like O only when drawing</li>
+</ul>
+<h3 id="we-have-to-detection-collision-in-4-coordinates">We have to detection collision in 4 coordinates</h3>
+<ul>
+<li>Originally detect one</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">//Also need to check nextPos has a block or not.
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">if</span> (nextPos.x <span style="color:#5bc4bf">&gt;</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> nextPos.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span> nextPos.y <span style="color:#5bc4bf">&lt;</span> fieldHeight 
+			<span style="color:#5bc4bf">&amp;&amp;</span> field[nextPos.x][nextPos.y] <span style="color:#5bc4bf">==</span> false) {
+			pos <span style="color:#5bc4bf">=</span> nextPos;
+		}<span style="color:#8d8687">// if nextPos is not vaild
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">else</span> {
+			<span style="color:#815ba4">if</span> (action <span style="color:#5bc4bf">==</span> Action<span style="color:#5bc4bf">::</span>MoveDown) {
+				field[pos.x][pos.y] <span style="color:#5bc4bf">=</span> true; <span style="color:#8d8687">// when we touch bottom, record it as true.
+</span><span style="color:#8d8687"></span>				pos <span style="color:#5bc4bf">=</span> origin;  <span style="color:#8d8687">//let pos become origin which means move to beginning, when hit the bottom.
+</span><span style="color:#8d8687"></span>			}
+	
+		}
+</code></pre></div><ul>
+<li>After</li>
+<li><code>np.y&lt;0 ||field[nextPos.x][nextPos.y] == false</code> Just put it on top, otherwise check if there is anything put in the field before</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">        <span style="color:#fec418">int</span> countEmpty <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>;
+        <span style="color:#fec418">bool</span> isEmpty <span style="color:#5bc4bf">=</span> false;
+        <span style="color:#815ba4">for</span>(<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i d :shape){
+            sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> nextPos <span style="color:#5bc4bf">+</span>d ;
+            <span style="color:#815ba4">if</span> (np.x <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> np.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span> np.y <span style="color:#5bc4bf">&lt;</span> fieldHeight  <span style="color:#8d8687">//do not need np.y &gt;=0 because the up side of window has no limit
+</span><span style="color:#8d8687"></span>			    <span style="color:#5bc4bf">&amp;&amp;</span> (np.y<span style="color:#5bc4bf">&lt;</span><span style="color:#f99b15">0</span> <span style="color:#5bc4bf">||</span>field[nextPos.x][nextPos.y] <span style="color:#5bc4bf">==</span> false) )  <span style="color:#8d8687">// if it still outside the window, do not store field 
+</span><span style="color:#8d8687"></span>            {
+               countEmpty<span style="color:#5bc4bf">++</span>;
+		    }
+        }
+        <span style="color:#815ba4">if</span>(countEmpty <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">4</span>){
+            	pos <span style="color:#5bc4bf">=</span> nextPos;
+        }
+		<span style="color:#815ba4">else</span> {
+			<span style="color:#815ba4">if</span> (action <span style="color:#5bc4bf">==</span> Action<span style="color:#5bc4bf">::</span>MoveDown) {
+                <span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : shape){
+                    sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+                    <span style="color:#8d8687">// be careful that np.y might be negative, if np.y&gt;0 and record it.
+</span><span style="color:#8d8687"></span>                    <span style="color:#815ba4">if</span>(np.y<span style="color:#5bc4bf">&gt;</span><span style="color:#f99b15">0</span>){
+                        field[np.x][np.y] <span style="color:#5bc4bf">=</span> true;
+                    }
+				    
+                }
+				pos <span style="color:#5bc4bf">=</span> origin;  
+			}
+	
+		}
+</code></pre></div><h3 id="add-shape-i">Add shape I</h3>
+<ul>
+<li><code>sf::Vector2i currentShape[4] = shape_I;</code> we cannot directly copy it.</li>
+<li>use <!-- raw HTML omitted --></li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;vector&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span><span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
+	
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldWidth <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">10</span>;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldHeight <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">20</span>;
+
+	<span style="color:#fec418">bool</span> field[fieldWidth][fieldHeight] <span style="color:#5bc4bf">=</span> {};
+
+	sf<span style="color:#5bc4bf">::</span>Texture yellowTexture;
+	<span style="color:#815ba4">if</span> (<span style="color:#5bc4bf">!</span>yellowTexture.loadFromFile(<span style="color:#48b685">&#34;yellow.png&#34;</span>)) {
+		<span style="color:#815ba4">return</span> EXIT_FAILURE;
+	}
+	<span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>	<span style="color:#8d8687">//      OO  (0, 0) (1, 0)
+</span><span style="color:#8d8687"></span>	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> shape_O <span style="color:#5bc4bf">=</span> {
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+	};
+	<span style="color:#8d8687">// I:  OOOO (-1,0) (0, 0) (1, 0) (2, 0) 
+</span><span style="color:#8d8687"></span>	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> shape_I <span style="color:#5bc4bf">=</span> {
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">2</span>, <span style="color:#f99b15">0</span>),
+	};
+
+	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> currentShape;
+	<span style="color:#815ba4">if</span> (rand() <span style="color:#5bc4bf">%</span> <span style="color:#f99b15">2</span> <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">0</span>) {
+		currentShape <span style="color:#5bc4bf">=</span> shape_O;
+	}
+	<span style="color:#815ba4">else</span> {
+		currentShape <span style="color:#5bc4bf">=</span> shape_I;
+	}
+
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockWidth <span style="color:#5bc4bf">=</span> yellowTexture.getSize().x;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockHeight <span style="color:#5bc4bf">=</span> yellowTexture.getSize().y;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowWidth <span style="color:#5bc4bf">=</span> fieldWidth <span style="color:#5bc4bf">*</span> blockWidth;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowHeight <span style="color:#5bc4bf">=</span> fieldHeight <span style="color:#5bc4bf">*</span> blockHeight;
+	<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i origin(fieldWidth<span style="color:#5bc4bf">/</span><span style="color:#f99b15">2</span>,<span style="color:#f99b15">0</span>);
+	sf<span style="color:#5bc4bf">::</span>Vector2i pos(origin);
+
+	sf<span style="color:#5bc4bf">::</span>Sprite yellowSprite(yellowTexture);
+	sf<span style="color:#5bc4bf">::</span>RenderWindow window(sf<span style="color:#5bc4bf">::</span>VideoMode(windowWidth, windowHeight), <span style="color:#48b685">&#34;Tetris&#34;</span>);
+	sf<span style="color:#5bc4bf">::</span>Clock clock;
+	<span style="color:#815ba4">while</span> (window.isOpen()) {
+		<span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Action</span> {
+			Hold,
+			MoveDown,
+			MoveLeft,
+			MoveRight,
+		};
+		Action action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>Hold;
+		sf<span style="color:#5bc4bf">::</span>Event evt;
+		<span style="color:#815ba4">if</span> (window.pollEvent(evt)) {
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+				window.close();
+			}
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>KeyPressed) {
+				<span style="color:#815ba4">switch</span> (evt.key.code) {
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Left:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveLeft;
+					<span style="color:#815ba4">break</span>;
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Right:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveRight;
+					<span style="color:#815ba4">break</span>;
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Down:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveDown;
+					<span style="color:#815ba4">break</span>;
+				}
+			}
+		}
+		sf<span style="color:#5bc4bf">::</span>Vector2i nextPos(pos);
+		<span style="color:#815ba4">if</span> (clock.getElapsedTime().asSeconds() <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0.3f</span>) {
+			action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveDown;
+			clock.restart();
+		}
+		<span style="color:#815ba4">switch</span> (action) {
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>Hold:
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveDown:
+			nextPos.y<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveLeft:
+			nextPos.x<span style="color:#5bc4bf">--</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveRight:
+			nextPos.x<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		}
+		<span style="color:#8d8687">// detection 
+</span><span style="color:#8d8687"></span>		<span style="color:#fec418">int</span> countEmpty <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>;
+		<span style="color:#fec418">bool</span> isEmpty <span style="color:#5bc4bf">=</span> false;
+		<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i d : currentShape) {
+			sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> nextPos <span style="color:#5bc4bf">+</span>d ;
+			<span style="color:#815ba4">if</span> (np.x <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> np.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span>
+				np.y <span style="color:#5bc4bf">&lt;</span> fieldHeight <span style="color:#5bc4bf">&amp;&amp;</span>
+				(np.y <span style="color:#5bc4bf">&lt;</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">||</span> field[np.x][np.y] <span style="color:#5bc4bf">==</span> false)) {
+				countEmpty<span style="color:#5bc4bf">++</span>;
+			}
+		}
+		<span style="color:#815ba4">if</span> (countEmpty <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">4</span>) {
+			pos <span style="color:#5bc4bf">=</span> nextPos;
+		}
+		<span style="color:#815ba4">else</span> 
+		{
+			<span style="color:#815ba4">if</span> (action <span style="color:#5bc4bf">==</span> Action<span style="color:#5bc4bf">::</span>MoveDown) {
+				<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : currentShape) {
+					sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+					<span style="color:#815ba4">if</span> (np.y <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span>) {
+						field[np.x][np.y] <span style="color:#5bc4bf">=</span> true;
+					}				
+				}
+				pos <span style="color:#5bc4bf">=</span> origin;
+				<span style="color:#8d8687">//when hit the bottom , randomly pick a shape
+</span><span style="color:#8d8687"></span>				<span style="color:#815ba4">if</span> (rand() <span style="color:#5bc4bf">%</span> <span style="color:#f99b15">2</span> <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">0</span>) {
+					currentShape <span style="color:#5bc4bf">=</span> shape_O;
+				}
+				<span style="color:#815ba4">else</span> {
+					currentShape <span style="color:#5bc4bf">=</span> shape_I;
+				}
+			}
+		}
+		
+
+		window.clear();
+		<span style="color:#8d8687">// draw field if field[][] is true
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> x <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; x <span style="color:#5bc4bf">&lt;</span> fieldWidth; x<span style="color:#5bc4bf">++</span>) {
+			<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> y <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; y <span style="color:#5bc4bf">&lt;</span> fieldHeight; y<span style="color:#5bc4bf">++</span>) {
+				<span style="color:#815ba4">if</span> (field[x][y]) {
+					yellowSprite.setPosition(
+						<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+						<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(yellowSprite);
+				}
+			}
+		}
+		<span style="color:#8d8687">// draw a controling object
+</span><span style="color:#8d8687"></span>		<span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>        <span style="color:#8d8687">//      OO  (0, 0) (1, 0)      (0,0) is current pos
+</span><span style="color:#8d8687"></span>
+		<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : currentShape) {
+			sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+			yellowSprite.setPosition(<span style="color:#fec418">float</span>(np.x<span style="color:#5bc4bf">*</span> blockWidth),
+				<span style="color:#fec418">float</span>(np.y<span style="color:#5bc4bf">*</span> blockHeight));
+			window.draw(yellowSprite);
+			
+		
+		}
+		window.display();
+	
+		
+	}
+	
+	<span style="color:#815ba4">return</span> EXIT_SUCCESS;
+
+}
 </code></pre></div>
         </div>
 

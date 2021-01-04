@@ -13,7 +13,7 @@
       <pubDate>Mon, 04 Jan 2021 18:05:00 +0800</pubDate>
       
       <guid>https://ycl818.github.io/blog/sfml5/</guid>
-      <description>Basic setting #include &amp;lt;SFML/Graphics.hpp&amp;gt; int main() { const int fieldWidth = 10; const int fieldHeight = 20; sf::Texture yellowTexture; if (!</description>
+      <description>Base setting #include &amp;lt;SFML/Graphics.hpp&amp;gt; int main() { const int fieldWidth = 10; const int fieldHeight = 20; sf::Texture yellowTexture; if (!</description>
     </item>
     
     <item>
