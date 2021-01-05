@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-tw"><head>
+  <meta charset="utf-8">
+  <title>Yi_Chien&#39;s Blog</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description"
+    content="code SFML">
+  
+  <meta name="author" content="Yi-Chien Lee">
+  <meta name="generator" content="Hugo 0.78.1" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://ycl818.github.io/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://ycl818.github.io/plugins/slick/slick.css ">
+  
+  <link rel="stylesheet" href="https://ycl818.github.io/plugins/themify-icons/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://ycl818.github.io/plugins/venobox/venobox.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://ycl818.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://ycl818.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://ycl818.github.io/images/favicon.png " type="image/x-icon">
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-182975668-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
+      <a class="navbar-brand mobile-view" href="https://ycl818.github.io"><img class="img-fluid"
+          src="https://ycl818.github.io/images/logo1.png" alt="Yi_Chien&#39;s Blog"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <div class="desktop-view">
+          <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.instagram.com/qq_lyc0818/"><i class="ti-instagram"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/ycl818"><i class="ti-github"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <a class="navbar-brand mx-auto desktop-view" href="https://ycl818.github.io"><img class="img-fluid"
+            src="https://ycl818.github.io/images/logo1.png" alt="Yi_Chien&#39;s Blog"></a>
+
+        <ul class="navbar-nav">
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://ycl818.github.io/about">About</a>
+          </li>
+          
+          
+        </ul>
+
+        
+        <!-- search -->
+        <div class="search pl-lg-4">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://ycl818.github.io/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        
+        <a href="/categories/sfml"
+          class="text-primary">S f m l</a>
+        
+        <h2>SFML 5</h2>
+        <div class="mb-3 post-meta">
+          <span>By Yi-Chien Lee</span>
+          
+          <span class="border-bottom border-primary px-2 mx-1"></span>
+          <span>05 January 2021</span>
+          
+        </div>
+        
+        <div class="content mb-5">
+          <h3 id="make-blocks-have-different-color">Make blocks have different color</h3>
+<ul>
+<li>First load the texture</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">sf<span style="color:#5bc4bf">::</span>Texture lightBlueTexture;
+	<span style="color:#815ba4">if</span> (<span style="color:#5bc4bf">!</span>lightBlueTexture.loadFromFile(<span style="color:#48b685">&#34;light_blue.png&#34;</span>)) {
+		<span style="color:#815ba4">return</span> EXIT_FAILURE;
+	}
+</code></pre></div><ul>
+<li>Before drawing, create a Sprite</li>
+<li>Now, we have two Sprite</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">    sf<span style="color:#5bc4bf">::</span>Sprite yellowSprite(yellowTexture);
+	sf<span style="color:#5bc4bf">::</span>Sprite lightBlueSprite(lightBlueTexture);
+</code></pre></div><ul>
+<li>shape decides by different type</li>
+<li>use enum to decide type</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Type</span> {
+		O,
+		I,
+
+	};
+</code></pre></div><div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">if</span> (rand() <span style="color:#5bc4bf">%</span> <span style="color:#f99b15">2</span> <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">0</span>) {
+		currentType <span style="color:#5bc4bf">=</span> Type<span style="color:#5bc4bf">::</span>O;
+	}
+	<span style="color:#815ba4">else</span> {
+		currentShape <span style="color:#5bc4bf">=</span> Type<span style="color:#5bc4bf">::</span>I;
+	}
+</code></pre></div><ul>
+<li><code>Type::O</code> = 0, and <code>Type::I</code> =1</li>
+<li><code>Type currentType = Type (rand() %2);</code>  transform type to Type(enum)</li>
+<li>create currentSprite to decide a color</li>
+<li><code>sf::Sprite currentSprite;</code></li>
+<li>replace the place where use sprite to currentSprite</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">switch</span> (currentType) {
+		<span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>O:
+			currentShape <span style="color:#5bc4bf">=</span> shape_O;
+			currentSprite <span style="color:#5bc4bf">=</span> yellowSprite;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>I:
+			currentShape <span style="color:#5bc4bf">=</span> shape_I;
+			currentSprite <span style="color:#5bc4bf">=</span> lightBlueSprite;
+			<span style="color:#815ba4">break</span>;
+		
+		}
+</code></pre></div><h3 id="current-source-code">current source code</h3>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;SFML/Graphics.hpp&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687">#include</span> <span style="color:#8d8687">&lt;vector&gt;</span><span style="color:#8d8687">
+</span><span style="color:#8d8687"></span><span style="color:#fec418">int</span> <span style="color:#06b6ef">main</span>() {
+	
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldWidth <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">10</span>;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> fieldHeight <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">20</span>;
+
+	<span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Type</span> {
+		O,
+		I,
+
+	};
+	<span style="color:#fec418">bool</span> field[fieldWidth][fieldHeight] <span style="color:#5bc4bf">=</span> {};
+
+	sf<span style="color:#5bc4bf">::</span>Texture yellowTexture;
+	<span style="color:#815ba4">if</span> (<span style="color:#5bc4bf">!</span>yellowTexture.loadFromFile(<span style="color:#48b685">&#34;yellow.png&#34;</span>)) {
+		<span style="color:#815ba4">return</span> EXIT_FAILURE;
+	}
+
+	sf<span style="color:#5bc4bf">::</span>Texture lightBlueTexture;
+	<span style="color:#815ba4">if</span> (<span style="color:#5bc4bf">!</span>lightBlueTexture.loadFromFile(<span style="color:#48b685">&#34;light_blue.png&#34;</span>)) {
+		<span style="color:#815ba4">return</span> EXIT_FAILURE;
+	}
+	<span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>	<span style="color:#8d8687">//      OO  (0, 0) (1, 0)
+</span><span style="color:#8d8687"></span>	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> shape_O <span style="color:#5bc4bf">=</span> {
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>,<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>),
+	};
+	<span style="color:#8d8687">// I:  OOOO (-1,0) (0, 0) (1, 0) (2, 0) 
+</span><span style="color:#8d8687"></span>	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> shape_I <span style="color:#5bc4bf">=</span> {
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#5bc4bf">-</span><span style="color:#f99b15">1</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">0</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">1</span>, <span style="color:#f99b15">0</span>),
+		sf<span style="color:#5bc4bf">::</span>Vector2i(<span style="color:#f99b15">2</span>, <span style="color:#f99b15">0</span>),
+	};
+
+	Type currentType <span style="color:#5bc4bf">=</span> Type(rand() <span style="color:#5bc4bf">%</span> <span style="color:#f99b15">2</span>);
+	
+	
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockWidth <span style="color:#5bc4bf">=</span> yellowTexture.getSize().x;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> blockHeight <span style="color:#5bc4bf">=</span> yellowTexture.getSize().y;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowWidth <span style="color:#5bc4bf">=</span> fieldWidth <span style="color:#5bc4bf">*</span> blockWidth;
+	<span style="color:#815ba4">const</span> <span style="color:#fec418">int</span> windowHeight <span style="color:#5bc4bf">=</span> fieldHeight <span style="color:#5bc4bf">*</span> blockHeight;
+	<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i origin(fieldWidth<span style="color:#5bc4bf">/</span><span style="color:#f99b15">2</span>,<span style="color:#f99b15">0</span>);
+	sf<span style="color:#5bc4bf">::</span>Vector2i pos(origin);
+
+	sf<span style="color:#5bc4bf">::</span>Sprite yellowSprite(yellowTexture);
+	sf<span style="color:#5bc4bf">::</span>Sprite lightBlueSprite(lightBlueTexture);
+	sf<span style="color:#5bc4bf">::</span>Sprite currentSprite;
+	<span style="color:#8d8687">// shape decides by different type
+</span><span style="color:#8d8687"></span>	std<span style="color:#5bc4bf">::</span>vector<span style="color:#5bc4bf">&lt;</span>sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&gt;</span> currentShape;
+
+
+	sf<span style="color:#5bc4bf">::</span>RenderWindow window(sf<span style="color:#5bc4bf">::</span>VideoMode(windowWidth, windowHeight), <span style="color:#48b685">&#34;Tetris&#34;</span>);
+	sf<span style="color:#5bc4bf">::</span>Clock clock;
+	<span style="color:#815ba4">while</span> (window.isOpen()) {
+		<span style="color:#815ba4">switch</span> (currentType) {
+		<span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>O:
+			currentShape <span style="color:#5bc4bf">=</span> shape_O;
+			currentSprite <span style="color:#5bc4bf">=</span> yellowSprite;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>I:
+			currentShape <span style="color:#5bc4bf">=</span> shape_I;
+			currentSprite <span style="color:#5bc4bf">=</span> lightBlueSprite;
+			<span style="color:#815ba4">break</span>;
+		
+		}
+		<span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Action</span> {
+			Hold,
+			MoveDown,
+			MoveLeft,
+			MoveRight,
+		};
+		Action action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>Hold;
+		sf<span style="color:#5bc4bf">::</span>Event evt;
+		<span style="color:#815ba4">if</span> (window.pollEvent(evt)) {
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>Closed) {
+				window.close();
+			}
+			<span style="color:#815ba4">if</span> (evt.type <span style="color:#5bc4bf">==</span> sf<span style="color:#5bc4bf">::</span>Event<span style="color:#5bc4bf">::</span>KeyPressed) {
+				<span style="color:#815ba4">switch</span> (evt.key.code) {
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Left:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveLeft;
+					<span style="color:#815ba4">break</span>;
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Right:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveRight;
+					<span style="color:#815ba4">break</span>;
+				<span style="color:#815ba4">case</span> sf<span style="color:#5bc4bf">::</span>Keyboard<span style="color:#5bc4bf">::</span>Down:
+					action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveDown;
+					<span style="color:#815ba4">break</span>;
+				}
+			}
+		}
+		sf<span style="color:#5bc4bf">::</span>Vector2i nextPos(pos);
+		<span style="color:#815ba4">if</span> (clock.getElapsedTime().asSeconds() <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0.3f</span>) {
+			action <span style="color:#5bc4bf">=</span> Action<span style="color:#5bc4bf">::</span>MoveDown;
+			clock.restart();
+		}
+		<span style="color:#815ba4">switch</span> (action) {
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>Hold:
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveDown:
+			nextPos.y<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveLeft:
+			nextPos.x<span style="color:#5bc4bf">--</span>;
+			<span style="color:#815ba4">break</span>;
+		<span style="color:#815ba4">case</span> Action<span style="color:#5bc4bf">::</span>MoveRight:
+			nextPos.x<span style="color:#5bc4bf">++</span>;
+			<span style="color:#815ba4">break</span>;
+		}
+		<span style="color:#8d8687">// detection 
+</span><span style="color:#8d8687"></span>		<span style="color:#fec418">int</span> countEmpty <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>;
+		<span style="color:#fec418">bool</span> isEmpty <span style="color:#5bc4bf">=</span> false;
+		<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i d : currentShape) {
+			sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> nextPos <span style="color:#5bc4bf">+</span>d ;
+			<span style="color:#815ba4">if</span> (np.x <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> np.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span>
+				np.y <span style="color:#5bc4bf">&lt;</span> fieldHeight <span style="color:#5bc4bf">&amp;&amp;</span>
+				(np.y <span style="color:#5bc4bf">&lt;</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">||</span> field[np.x][np.y] <span style="color:#5bc4bf">==</span> false)) {
+				countEmpty<span style="color:#5bc4bf">++</span>;
+			}
+		}
+		<span style="color:#815ba4">if</span> (countEmpty <span style="color:#5bc4bf">==</span> <span style="color:#f99b15">4</span>) {
+			pos <span style="color:#5bc4bf">=</span> nextPos;
+		}
+		<span style="color:#815ba4">else</span> 
+		{
+			<span style="color:#815ba4">if</span> (action <span style="color:#5bc4bf">==</span> Action<span style="color:#5bc4bf">::</span>MoveDown) {
+				<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : currentShape) {
+					sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+					<span style="color:#815ba4">if</span> (np.y <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span>) {
+						field[np.x][np.y] <span style="color:#5bc4bf">=</span> true;
+					}				
+				}
+				pos <span style="color:#5bc4bf">=</span> origin;
+				<span style="color:#8d8687">//when hit the bottom , randomly pick a shape
+</span><span style="color:#8d8687"></span>				currentType <span style="color:#5bc4bf">=</span> Type(rand() <span style="color:#5bc4bf">%</span> <span style="color:#f99b15">2</span>);
+			}
+		}
+		
+
+		window.clear();
+		<span style="color:#8d8687">// draw field if field[][] is true
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> x <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; x <span style="color:#5bc4bf">&lt;</span> fieldWidth; x<span style="color:#5bc4bf">++</span>) {
+			<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> y <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; y <span style="color:#5bc4bf">&lt;</span> fieldHeight; y<span style="color:#5bc4bf">++</span>) {
+				<span style="color:#815ba4">if</span> (field[x][y]) {
+					currentSprite.setPosition(
+						<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+						<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(currentSprite);
+				}
+			}
+		}
+		<span style="color:#8d8687">// draw a controling object
+</span><span style="color:#8d8687"></span>		<span style="color:#8d8687">// O:   OO  (0,-1) (1,-1)
+</span><span style="color:#8d8687"></span>        <span style="color:#8d8687">//      OO  (0, 0) (1, 0)      (0,0) is current pos
+</span><span style="color:#8d8687"></span>
+		<span style="color:#815ba4">for</span> (<span style="color:#815ba4">const</span> sf<span style="color:#5bc4bf">::</span>Vector2i<span style="color:#5bc4bf">&amp;</span> d : currentShape) {
+			sf<span style="color:#5bc4bf">::</span>Vector2i np <span style="color:#5bc4bf">=</span> pos <span style="color:#5bc4bf">+</span> d;
+			currentSprite.setPosition(<span style="color:#fec418">float</span>(np.x<span style="color:#5bc4bf">*</span> blockWidth),
+				<span style="color:#fec418">float</span>(np.y<span style="color:#5bc4bf">*</span> blockHeight));
+			window.draw(currentSprite);
+			
+		
+		}
+		window.display();
+	
+		
+	}
+	
+	<span style="color:#815ba4">return</span> EXIT_SUCCESS;
+
+}
+</code></pre></div>
+        </div>
+
+        
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "ycl818" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 text-center mb-5">
+        <a href="https://ycl818.github.io"><img src="https://ycl818.github.io/images/logo1.png" alt="Yi_Chien&#39;s Blog"></a>
+      </div>
+               
+      <div class="col-lg-3 col-sm-6 mb-5">
+        <h6 class="mb-4">Contact Me</h6>
+        <ul class="list-unstyled">
+          
+          <li class="mb-3"><a class="text-dark" href="tel:0903133236"><i
+                class="ti-mobile mr-3 text-primary"></i>0903133236</a></li>
+          
+                     
+          <li class="mb-3"><i class="ti-location-pin mr-3 text-primary"></i>Hsinchu, Taiwan</li>
+          
+                     
+          <li class="mb-3"><a class="text-dark" href="mailto:kevinyichienlee@gmail.com"><i
+                class="ti-email mr-3 text-primary"></i>kevinyichienlee@gmail.com</a>
+          
+          </li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 col-sm-6 mb-5">
+        <h6 class="mb-4">Social Contacts</h6>
+        <ul class="list-unstyled">
+          
+          <li class="mb-3"><a class="text-dark" href="https://www.instagram.com/qq_lyc0818/">instagram</a></li>
+          
+          <li class="mb-3"><a class="text-dark" href="https://github.com/ycl818">github</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-3 col-sm-6 mb-5">
+        <h6 class="mb-4">Categories</h6>
+        <ul class="list-unstyled">
+          <li class="mb-3"><a class="text-dark"
+              href="/categories/sfml">Sfml</a>
+          </li>
+          <li class="mb-3"><a class="text-dark"
+              href="/categories/%e7%a5%9d%e8%b3%80">祝賀</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-sm-6 mb-5">
+        <h6 class="mb-4">Quick Links</h6>
+        <ul class="list-unstyled">
+          
+          <li class="mb-3"><a class="text-dark" href="https://ycl818.github.io/about">About</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-12 border-top py-4 text-center">
+        
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var indexURL = "https://ycl818.github.io/index.json"
+</script>
+
+<!-- JS Plugins -->
+
+<script src="https://ycl818.github.io/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://ycl818.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://ycl818.github.io/plugins/slick/slick.min.js"></script>
+
+<script src="https://ycl818.github.io/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://ycl818.github.io/plugins/search/fuse.min.js"></script>
+
+<script src="https://ycl818.github.io/plugins/search/mark.js"></script>
+
+<script src="https://ycl818.github.io/plugins/search/search.js"></script>
+
+<!-- Main Script -->
+
+<script src="https://ycl818.github.io/js/script.min.js"></script>
+<!-- google analitycs -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', 'Your ID', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+<div id="js-cookie-box" class="cookie-box cookie-box-hide">
+	This site uses cookies. By continuing to use this website, you agree to their use. <span id="js-cookie-button" class="btn btn-sm btn-primary ml-2">I Accept</span>
+</div>
+<script>
+	(function ($) {
+		const cookieBox = document.getElementById('js-cookie-box');
+		const cookieButton = document.getElementById('js-cookie-button');
+		if (!Cookies.get('cookie-box')) {
+			cookieBox.classList.remove('cookie-box-hide');
+			cookieButton.onclick = function () {
+				Cookies.set('cookie-box', true, {
+					expires:  2 
+				});
+				cookieBox.classList.add('cookie-box-hide');
+			};
+		}
+	})(jQuery);
+</script>
+
+
+<style>
+.cookie-box {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  z-index: 9999;
+  padding: 1rem 2rem;
+  background: rgb(71, 71, 71);
+  transition: all .75s cubic-bezier(.19, 1, .22, 1);
+  color: #fdfdfd;
+}
+
+.cookie-box-hide {
+  display: none;
+}
+</style>
+</body>
+</html>
