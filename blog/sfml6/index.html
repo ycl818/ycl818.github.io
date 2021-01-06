@@ -352,6 +352,75 @@ if (!doNotTrack) {
 	<span style="color:#815ba4">return</span> EXIT_SUCCESS;
 
 }
+</code></pre></div><h3 id="remain-the-block-color-which-is-stored-in-the-field">Remain the block color which is stored in the field</h3>
+<ul>
+<li><code>bool field[fieldWidth][fieldHeight] = {};</code> bool only represent True or False</li>
+<li>Now, we care what we put in the field</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">enum</span> <span style="color:#815ba4">class</span> <span style="color:#fec418">Type</span> {
+		None,
+		O,
+		I,
+
+	};
+	Type field[fieldWidth][fieldHeight] <span style="color:#5bc4bf">=</span> {};
+</code></pre></div><ul>
+<li>Checking part we need to change</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">if</span> (np.x <span style="color:#5bc4bf">&gt;=</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">&amp;&amp;</span> np.x <span style="color:#5bc4bf">&lt;</span> fieldWidth <span style="color:#5bc4bf">&amp;&amp;</span>
+				np.y <span style="color:#5bc4bf">&lt;</span> fieldHeight <span style="color:#5bc4bf">&amp;&amp;</span>
+				(np.y <span style="color:#5bc4bf">&lt;</span> <span style="color:#f99b15">0</span> <span style="color:#5bc4bf">||</span> field[np.x][np.y] <span style="color:#5bc4bf">==</span> Type<span style="color:#5bc4bf">::</span>None)) {
+				countEmpty<span style="color:#5bc4bf">++</span>;
+			}  
+</code></pre></div><ul>
+<li>Draw field</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#8d8687">// draw field if field[][] is true
+</span><span style="color:#8d8687"></span>		<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> x <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; x <span style="color:#5bc4bf">&lt;</span> fieldWidth; x<span style="color:#5bc4bf">++</span>) {
+			<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> y <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; y <span style="color:#5bc4bf">&lt;</span> fieldHeight; y<span style="color:#5bc4bf">++</span>) {
+				<span style="color:#815ba4">if</span> (field[x][y] <span style="color:#5bc4bf">==</span> Type<span style="color:#5bc4bf">::</span>None) <span style="color:#815ba4">continue</span>;
+				<span style="color:#815ba4">switch</span>((field[x][y]){
+                <span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>O:
+                    yellowSprite.setPosition(
+					<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+					<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(yellowSprite);
+                    <span style="color:#815ba4">break</span>;
+                <span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>I:
+                    lightBlueSprite.setPosition(
+					<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+					<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(lightBlueSprite);
+                    <span style="color:#815ba4">break</span>;
+				}
+
+                }
+					
+			}
+</code></pre></div><ul>
+<li>better mode</li>
+</ul>
+<div class="highlight"><pre style="color:#2f1e2e;background-color:#e7e9db;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> x <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; x <span style="color:#5bc4bf">&lt;</span> fieldWidth; x<span style="color:#5bc4bf">++</span>) {
+			<span style="color:#815ba4">for</span> (<span style="color:#fec418">int</span> y <span style="color:#5bc4bf">=</span> <span style="color:#f99b15">0</span>; y <span style="color:#5bc4bf">&lt;</span> fieldHeight; y<span style="color:#5bc4bf">++</span>) {
+				<span style="color:#815ba4">if</span> (field[x][y] <span style="color:#5bc4bf">==</span> Type<span style="color:#5bc4bf">::</span>None) <span style="color:#815ba4">continue</span>;
+
+                sf<span style="color:#5bc4bf">::</span>Sprite s;
+				<span style="color:#815ba4">switch</span>((field[x][y]){
+                <span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>O:
+                    s<span style="color:#5bc4bf">=</span> yellowSprite;
+                    <span style="color:#815ba4">break</span>;
+                <span style="color:#815ba4">case</span> Type<span style="color:#5bc4bf">::</span>I:
+                    s<span style="color:#5bc4bf">=</span> lightBlueSprite;
+                    <span style="color:#815ba4">break</span>;
+				}
+                s.setPosition(
+					<span style="color:#fec418">float</span>(x<span style="color:#5bc4bf">*</span> blockWidth),
+					<span style="color:#fec418">float</span>(y<span style="color:#5bc4bf">*</span> blockHeight));
+					window.draw(s);
+                }
+					
+			}
+		
 </code></pre></div>
         </div>
 
